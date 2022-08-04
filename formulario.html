@@ -1,0 +1,870 @@
+<html>
+	<head>
+		<title>Formulario</title>
+		
+	<link rel="stylesheet" href="/Enwipweb/style.css">
+	<script src="javascripts/utilidades.js" language="javascript"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="shortcut icon" href="/Enwipweb/imagenes/ENWIP_favicon.ico">
+	<script language="JavaScript"><!--
+
+		var xhr;
+	
+
+		function validar(){
+			document.getElementById("vnom").innerHTML="";
+			document.getElementById("vape").innerHTML="";
+			document.getElementById("vdir").innerHTML="";
+			document.getElementById("vtel").innerHTML="";
+			document.getElementById("vpass").innerHTML="";
+			document.getElementById("vvrpass").innerHTML="";
+			document.getElementById("vciudad").innerHTML="";
+            document.getElementById("vmail").innerHTML="";
+            document.getElementById("fnac").innerHTML="";
+            document.getElementById("vpais").innerHTML="";
+            document.getElementById("varea").innerHTML="";
+            document.getElementById("vestudios").innerHTML="";
+            document.getElementById("vcaptcha").innerHTML="";
+            
+			var nom=document.formulario.nombre.value;
+			var ap=document.formulario.apellido.value;
+			var dir=document.formulario.direccion.value;
+			var tels=document.formulario.tel.value;
+			var key=document.formulario.pass.value;
+			var rkey=document.formulario.vrpass.value;
+			var ciu=document.formulario.ciudad.value;
+			var em=document.formulario.email.value;
+			var nacA=document.formulario.ano.value;
+			var nacM=document.formulario.mes.value;
+			var nacD=document.formulario.dia.value;
+			var pai=document.formulario.pais.value;
+			var are=document.formulario.area.value;
+			var est=document.formulario.estudios.value;
+			var capt=document.formulario.answer.value;
+			
+			
+
+				
+			 var controles = document.forms[0].elements;
+	          
+	          
+	          for (var i=0; i<controles.length; i++)
+	          { 
+
+		              if(controles[i].name=="genero"){
+		
+						for(var j=0;j<document.formulario.genero.length;j++){
+								if(document.formulario.genero[j].checked){
+									controles[i].value=document.formulario.genero[j].value;
+									break;
+									}
+							}
+
+		          }
+	          if(controles[i].name=="inversionista"){
+	      		
+					for(var j=0;j<document.formulario.inversionista.length;j++){
+							if(document.formulario.inversionista[j].checked){
+								controles[i].value=document.formulario.inversionista[j].value;
+								break;
+								}
+						}
+
+	          }
+	          if(controles[i].name=="tipoUsuario"){
+	      		
+					for(var j=0;j<document.formulario.tipoUsuario.length;j++){
+							if(document.formulario.tipoUsuario[j].checked){
+								controles[i].value=document.formulario.tipoUsuario[j].value;
+								break;
+								}
+						}
+
+	          }
+	         
+	              
+	          }
+			
+			var listo=true;
+
+			if(nacA=="capt"){
+				document.getElementById("vcaptcha").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+			if(nacA=="Año"||nacM=="Mes"||nacD=="Día"){
+				document.getElementById("fnac").innerHTML="<font color=\"red\">Seleccione una fecha correcta</font>";
+				listo=false;
+				}
+			if(pai=="-Seleccione Tema-"){
+				document.getElementById("vpais").innerHTML="<font color=\"red\">Seleccione un pais</font>";
+				listo=false;
+				}
+			if(are=="-Seleccione Tema-"){
+				document.getElementById("varea").innerHTML="<font color=\"red\">Seleccione un area</font>";
+				listo=false;
+				}
+			
+			if(est=="-Seleccione Tema-"){
+				document.getElementById("vestudios").innerHTML="<font color=\"red\">Seleccione sus estudios</font>";
+				listo=false;
+				}
+			if(ap==""){
+				document.getElementById("vape").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+			if(dir==""){
+				document.getElementById("vdir").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+			if(tels==""){
+				document.getElementById("vtel").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+			if(key!=rkey){
+				document.getElementById("vvrpass").innerHTML="<font color=\"red\">la contraseña no coincide</font>";
+				listo=false;
+				}
+			if(key==""){
+				document.getElementById("vpass").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+			if(rkey==""){
+				document.getElementById("vvrpass").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+			if(ciu==""){
+				document.getElementById("vciudad").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+
+
+			if(em==""){
+				document.getElementById("vmail").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+			if(listo){
+				enviarDatos();
+				}
+
+			}
+		
+		function enviarDatos(){
+			if (window.ActiveXObject)
+       	  {   xhr = new ActiveXObject("Microsoft.XMLHttp");      
+        	  }
+        else if ((window.XMLHttpRequest) || (typeof XMLHttpRequest)!=undefined)
+            {         xhr = new XMLHttpRequest();
+            }
+        else
+            { alert("Su navegador no tiene soporte para AJAX");
+              return;
+            }
+			
+				xhr.open("POST","http://localhost:8080/Enwipweb/ServletCrearCuenta",true);
+				xhr.onreadystatechange = procesaResultado;
+			       // Definición del tipo de contenido del cuerpo para formularios HTML
+			          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			          xhr.setRequestHeader("Accept-Charset","UTF-8");
+			          var datos = obtenerDatos();
+			       // Se envían los datos en el cuerpo de la petición
+			          xhr.send(datos);
+			   }
+
+		 function procesaResultado()
+	        { 
+				
+		        if (xhr.readyState == 4) 
+                  {  
+					
+	                  var res=xhr.responseText;
+
+						if(res=="listo"){
+							document.location.href="http://localhost:8080/Enwipweb/registrado.html";
+						}
+						
+			     document.getElementById("resultado").innerHTML=res;
+			    if(res=="<b>las letras no coinciden con la imagen</b>"){
+				    
+			    	document.getElementById("captcha").src="/Enwipweb/simpleImg";
+					   }
+				  
+	          }
+		          
+	          
+	        }
+		function obtenerDatos()
+	        { var controles = document.forms[0].elements;
+			          var datos = new Array();
+			          var cad = "";
+			          for (var i=0; i<controles.length; i++)
+			          {    cad = encodeURIComponent(controles[i].name)+"=";
+			               cad += encodeURIComponent(controles[i].value);
+			               datos.push(cad);
+			          }
+			       // Se forma la cadena con el método join() del array para evitar múltiples concatenaciones
+			          cad = datos.join("&");
+			          return cad;
+			        }
+			
+		function cargarEstudios(){
+			obj.enviar("http://localhost:8080/Enwipweb/CargarEstudiosFormulario","GET","procesaEstudios", null);
+			}
+		function cargarAreas(){
+			obj.enviar("http://localhost:8080/Enwipweb/CargarAreasFormulario","GET","procesaAreas", null);
+			}
+		function cargarDias(){
+			obj.enviar("http://localhost:8080/Enwipweb/CargarDiasFormulario","GET","procesaDias", null);
+			}
+		function cargarMeses(){
+			obj.enviar("http://localhost:8080/Enwipweb/CargarMesesFormulario","GET","procesaMeses", null);
+			}
+		function cargarAños(){
+			obj.enviar("http://localhost:8080/Enwipweb/CargarAnosFormulario","GET","procesaAños", null);
+			}
+		function cargarTipoInversion(){
+			obj.enviar("http://localhost:8080/Enwipweb/CargarTipoInversionFormulario","GET","procesaTipoInversion", null);
+			}
+		function cargarNivelInversion(){
+			obj.enviar("http://localhost:8080/Enwipweb/CargarNivelInversionFormulario","GET","procesaNivelInversion", null);
+			}
+		function cargarInversionista(){
+			document.getElementById("formularioInversionista").innerHTML="<table><tr><td>Seleccione el tipo de inversionista</td><td>Seleccione su tipo de inversion</td><td>Seleccione su nivel de inversión</td></tr><tr><td><select id=\"tipoInversionista\" name=\"tipoInversionista\" size=\"1\" /></select></td><td><select id=\"tipoInversion\" name=\"tipoInversion\" size=\"1\" /></select></td><td><select id=\"nivelInversion\" name=\"nivelInversion\" size=\"1\" /></select></td></tr> </table>";
+			obj.enviar("http://localhost:8080/Enwipweb/CargarTipoInversionistaFormulario","GET","procesaTipoInversionista", null);
+			}
+        function cargarDatos()
+        { 
+          obj = new ObjetoAJAX();
+          
+       // Invoca al servlet que devuelve el array de temas
+          obj.enviar("http://localhost:8080/Enwipweb/CargarPaisesFormulario","GET","procesaDatos", null);
+           
+        }
+
+        function procesaDatos()
+        { 	
+        
+        	//var paises = json.parseJSON();
+             var paise = eval("("+obj.respuestaTexto()+")");
+            
+       // Crea la opción de selección inicial
+          var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("-Seleccione Tema-");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("pais");
+          lista.appendChild(opcionInicio);
+          
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < paise.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",paise[elm].Pais);
+               var texto=document.createTextNode(paise[elm].Pais);
+               item.appendChild(texto);
+               document.getElementById("pais").appendChild(item);
+          }
+          cargarEstudios();
+        }
+
+        function procesaEstudios()
+        { 	
+        
+        	//var estudioss = json.parseJSON();
+             var estudios = eval("("+obj.respuestaTexto()+")");
+			
+       // Crea la opción de selección inicial
+          var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("-Seleccione Tema-");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("estudios");
+          lista.appendChild(opcionInicio);
+          
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < estudios.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",estudios[elm].Estudio);
+               var texto=document.createTextNode(estudios[elm].Estudio);
+               item.appendChild(texto);
+               document.getElementById("estudios").appendChild(item);
+          }
+
+          cargarAreas();
+        }
+      
+
+        function procesaAreas()
+        { 	
+        
+        
+             var areas = eval("("+obj.respuestaTexto()+")");
+			
+       // Crea la opción de selección inicial
+         var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("-Seleccione Tema-");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("area");
+          lista.appendChild(opcionInicio);
+          
+          
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < areas.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",areas[elm].Area);
+               var texto=document.createTextNode(areas[elm].Area);
+               item.appendChild(texto);
+               document.getElementById("area").appendChild(item);
+          }
+
+          cargarDias();
+        }
+
+        function procesaDias()
+        { 	
+        
+        
+             var dias = eval("("+obj.respuestaTexto()+")");
+			
+       // Crea la opción de selección inicial
+         var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("Día");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("dia");
+          lista.appendChild(opcionInicio);
+         
+          
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < dias.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",dias[elm].Dia);
+               var texto=document.createTextNode(dias[elm].Dia);
+               item.appendChild(texto);
+               document.getElementById("dia").appendChild(item);
+          }
+
+          cargarMeses();
+        }
+        
+        function procesaMeses()
+        { 	
+        
+        
+             var meses = eval("("+obj.respuestaTexto()+")");
+			
+       // Crea la opción de selección inicial
+         var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("Mes");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("mes");
+          lista.appendChild(opcionInicio);
+  
+          
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < meses.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",meses[elm].Mes);
+               var texto=document.createTextNode(meses[elm].Mes);
+               item.appendChild(texto);
+               document.getElementById("mes").appendChild(item);
+          }
+
+          cargarAños();
+        }
+
+        function procesaAños()
+        { 	
+        
+        
+             var años = eval("("+obj.respuestaTexto()+")");
+			
+       // Crea la opción de selección inicial
+         var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("Año");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("ano");
+          lista.appendChild(opcionInicio);
+
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < años.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",años[elm].Año);
+               var texto=document.createTextNode(años[elm].Año);
+               item.appendChild(texto);
+               document.getElementById("ano").appendChild(item);
+          }
+         
+          document.getElementById("captcha").src="/Enwipweb/simpleImg";
+        }
+
+        function procesaTipoInversionista()
+        { 	
+        
+        
+             var tInversionista = eval("("+obj.respuestaTexto()+")");
+			
+       // Crea la opción de selección inicial
+         var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("-Seleccione Tema-");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("tipoInversionista");
+          lista.appendChild(opcionInicio);
+
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < tInversionista.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",tInversionista[elm].Tipo);
+               var texto=document.createTextNode(tInversionista[elm].Tipo);
+               item.appendChild(texto);
+               document.getElementById("tipoInversionista").appendChild(item);
+          }
+
+          cargarTipoInversion();
+        }
+        function procesaTipoInversion()
+        { 	
+        
+        
+             var tInversion = eval("("+obj.respuestaTexto()+")");
+			
+       // Crea la opción de selección inicial
+         var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("-Seleccione Tema-");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("tipoInversion");
+          lista.appendChild(opcionInicio);
+
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < tInversion.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",tInversion[elm].Tipo);
+               var texto=document.createTextNode(tInversion[elm].Tipo);
+               item.appendChild(texto);
+               document.getElementById("tipoInversion").appendChild(item);
+          }
+
+          cargarNivelInversion()
+        }
+        function procesaNivelInversion()
+        { 	
+        
+        
+             var nInversion = eval("("+obj.respuestaTexto()+")");
+			
+       // Crea la opción de selección inicial
+         var opcionInicio=document.createElement("option");
+          var textoOpcion=document.createTextNode("-Seleccione Tema-");
+          opcionInicio.appendChild(textoOpcion);
+          var lista=document.getElementById("nivelInversion");
+          lista.appendChild(opcionInicio);
+
+
+       // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+          for (var elm = 0;elm < nInversion.length;elm++)
+          {    var item=document.createElement("option");
+               item.setAttribute("value",nInversion[elm].Nivel);
+               var texto=document.createTextNode(nInversion[elm].Nivel);
+               item.appendChild(texto);
+               document.getElementById("nivelInversion").appendChild(item);
+          }
+
+          
+        }
+		--></script>
+	</head>
+
+
+	<body onLoad="cargarDatos();">
+	 <br/>
+       <div id="encabezado"></div>
+        <br/>
+	<center>
+		<br/>
+		<h1>Crear una cuenta</h1>
+		<br/>
+		<form name="formulario" accept-charset="UTF-8">
+			<table width=95% border=0 align=center cellpadding=5 cellspacing=5>
+			<tr>
+				<td><b>Nombre:</b></td>
+				<td><input type="text" name="nombre" size="40"/><div id="vnom"></div></td>
+			</tr>
+			<tr>
+				<td><b>Apellidos:</b></td>
+				<td><input type="text" name="apellido" size="40"/><div id="vape"></div></td>
+			</tr>
+			<tr>
+				<td><b>Password:</b></td>
+				<td><input type="password" name="pass" size="40"/><div id="vpass"></div></td>
+			</tr>
+			<tr>
+				<td><b>Verifique el password:</b></td>
+				<td><input type="password" name="vrpass" size="40"/><div id="vvrpass"></div></td>
+			</tr>
+			<tr>
+			<td><b>Género:</b></td>
+			<td> <table><tr><td><input type="radio" name="genero"  value="Hombre" checked="checked"/></td><td>Hombre</td> </tr>
+						<tr><td><input type="radio" name="genero" value="Mujer"/></td><td>Mujer</td></tr>
+				</table>
+			</td>
+			</tr>
+			
+			<tr>
+			<td><b>Fecha de nacimiento:</b></td>
+			<td> <table><tr>
+			
+			<td><select id="dia" name="dia" size="1" /></select>		
+			
+			</td>
+			
+			<td><select id="mes" name="mes" size="1" /></select>			
+			
+			</td>
+						
+			<td><select id="ano" name="ano" size="1" /></select><div id="fnac"></div>			
+			
+			</td>
+			
+			</tr>
+						
+				</table>
+			</td>
+			</tr>
+			<tr>
+				<td><b>País:</b></td>
+				<td><select id="pais" name="pais" size="1"></select><div id="vpais"></div>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Ciudad:</b></td>
+				<td><input type="text" name="ciudad" size="40" ><div id="vciudad"></div></td>
+				</td>
+			</tr>
+		
+			<tr>
+				<td><b>Dirección:</b></td>
+				<td><input type="text" name="direccion" size="40"/><div id="vdir"></div></td>
+			</tr>
+			<tr>
+				<td><b>E-Mail:</b></td>
+				<td><input type="text" name="email" size="40"/><div id="vmail"></div></td>
+			</tr>
+			<tr>
+			<td><b>Teléfono:</b></td>
+			<td>
+				<input type="text" name="tel" size="25"/>
+				
+			<div id="vtel"></div></td>
+			</tr>
+				<tr>
+			<td><b>Área de estudio:</b></td>
+			<td><select id="area" name="area" size="1"/></select><div id="varea"></div></td>
+			</tr>
+			
+			<tr>
+				<td><b>Estudios:</b></td>
+				<td><select id="estudios" name="estudios" size="1" >
+
+					</select><div id="vestudios"></div>
+				</td>
+			</tr>
+			<tr>
+			
+
+			
+			<tr>
+			<td><b>¿Esta interesado en ser un inversionista?</b></td>
+			<td><div id="formularioInversionista"> <table><tr><td><input type="radio" name="inversionista"  value="si" onChange="cargarInversionista();" /></td><td>Si</td> </tr>
+						<tr><td><input type="radio" name="inversionista" value="no" checked="checked"/></td><td>No</td></tr>
+				</table></div>
+			</td>
+			</tr>
+			
+			<tr><td>Seleccione el tipo de cuenta que quiere crear</td>
+			<td><table cellpadding=5 cellspacing=5>
+			<tr><td>Tipo</td><td>Costo</td><td></td></tr>
+			<tr><td>Gratuito</td><td>US$0</td><td><input value="gratuito" type="radio" name="tipoUsuario"/ checked="checked"></td></tr>
+			<tr><td>Emprendedor</td><td>US$50</td><td><input value="emprendedor" type="radio" name="tipoUsuario"/></td></tr>
+			<tr><td>Premium</td><td>US$70</td><td><input value="premium" type="radio" name="tipoUsuario"/></td></tr>
+			</table></td>
+			</tr>
+					<tr>
+			<td ><b>Verificación de la palabra:</b></td>
+			<td ><font size="+0" color="gray">Escribe los caracteres que ves en la siguiente imagen</font></td>
+			</tr>
+			<tr><td colspan="2"><center><img id="captcha" src="/Enwipweb/simpleImg"></center></td>
+			</tr>
+			
+			<tr>
+			<td colspan="2">
+			<center><input type='text' name='answer' value=''></center>
+			<div id="vcaptcha"></div></td>
+			</tr>
+
+			
+				
+			
+			
+			
+			</table>
+		<br/>
+		<br/>
+		<br/>
+		
+		
+		</form>
+		
+<table><tr>
+			<td colspan="2"><b>Condiciones de Servicio de Enwip</b></td>
+			</tr>
+			<tr>
+			
+			<td colspan="2"><center><textarea name="perfil" rows="5" cols="80" >1.1 El uso que usted haga de los productos, software, servicios y sitios web de Google (en adelante, se denominarán los "Servicios", y queda excluido todo servicio que Google pueda proporcionarle en virtud de cualquier otro acuerdo consensuado por escrito) se rige por los términos de un acuerdo legal entre usted y Google. "Google" significa Google Inc., cuyo domicilio social se encuentra en 1600 Amphitheatre Parkway, Mountain View, California 94043 (Estados Unidos). En el presente documento se describen los componentes del acuerdo y se exponen algunos de los términos que lo regirán.
+
+    1.2 A menos que usted y Google establezcan lo contrario por escrito, el acuerdo con Google siempre incluirá, como mínimo, los términos y condiciones estipulados en este documento. En adelante, se denominarán las "Condiciones universales".
+
+    1.3 El acuerdo entre usted y Google también incluirá los términos de cualquier aviso legal que corresponda a los Servicios, además de las Condiciones universales. En adelante, todo ello se denominará las "Condiciones adicionales". Siempre que un Servicio esté regido por las Condiciones adicionales, podrá leerlas en el espacio destinado en el Servicio o a través de este.
+
+    1.4 Las Condiciones universales, junto con las Condiciones adicionales, conforman un acuerdo legalmente vinculante entre usted y Google en relación con el uso que usted haga de los Servicios. Le recomendamos que las lea detenidamente. En adelante, este acuerdo legal se denominará las "Condiciones".
+
+    1.5 En el caso de que exista alguna incoherencia entre las Condiciones adicionales y los Condiciones universales en relación con el Servicio, prevalecerán las disposiciones de las primeras.
+
+2. Aceptación de los Condiciones
+
+    2.1 Antes de hacer uso de los Servicios, deberá aceptar primero las Condiciones. De lo contrario, no podrá usarlos.
+
+    2.2 Para aceptar las Condiciones, dispone de varias posibilidades:
+
+        (A) hacer clic para aceptar dichas Condiciones, allí donde Google ofrezca esta opción en la interfaz de usuario del Servicio en cuestión; o bien
+
+        (B) utilizar los Servicios en sí. En ese caso, Google asumirá que acepta las Condiciones al empezar a usar los Servicios.
+
+    2.3 No podrá utilizar los Servicios ni aceptar las Condiciones si (a) no tiene la edad legal para contraer un acuerdo vinculante con Google o (b) si se le ha privado el uso y disfrute de los Servicios en virtud de la legislación de los Estados Unidos o de cualquier otro país, incluido su país de residencia o el país desde el cual utiliza los Servicios.
+
+    2.4 Antes de continuar, le recomendamos imprimir las Condiciones universales o guardar una copia de estas en la unidad de disco local para su información.
+
+3. Idioma de las Condiciones
+
+    3.1 La traducción que Google le proporcione de la versión en inglés de las Condiciones es únicamente a título informativo. La versión en inglés será la que prevalecerá y regirá su relación con Google.
+
+    3.2 En el caso de que exista alguna incoherencia entre la versión en inglés de las Condiciones y la versión traducida, prevalecerá la versión en inglés.
+
+4. Provisión de los Servicios por parte de Google
+
+    4.1 Google cuenta con entidades legales subsidiarias y filiales en todo el mundo ("Subsidiarias y filiales"). En ocasiones, estas empresas serán las encargadas de proveer los Servicios a nuestros clientes en nombre de Google. Por el presente acuerdo, usted reconoce y acepta que dichas Subsidiarias y filiales están autorizadas a proveerle dichos Servicios.
+
+    4.2 Google está constantemente innovando a fin de ofrecer la mejor experiencia posible a sus usuarios. Por el presente acuerdo, usted reconoce y acepta que el contenido y la naturaleza de los Servicios que proporciona Google pueden variar ocasionalmente sin previo aviso.
+
+    4.3 Como parte de esta permanente innovación, usted reconoce y acepta que Google pueda suspender, ya sea de forma permanente o temporal, los Servicios, o alguna de las funciones incluidas en estos, para usted o para los usuarios en general, a discreción de Google y sin previo aviso. Usted podrá interrumpir el uso que haga de los Servicios en cualquier momento que lo desee. No es necesario que informe de ello a Google.
+
+    4.4 Por el presente acuerdo, usted reconoce y acepta que, si Google inhabilita el acceso a su cuenta, es posible que no pueda acceder a los Servicios, a la información de su cuenta o a los archivos u otro contenido de esta.
+
+    4.5 Usted reconoce y acepta que, si bien Google puede no haber fijado ningún límite en cuanto al número de transmisiones para enviar o recibir elementos a través de los Servicios ni tampoco en la cantidad de espacio de almacenamiento disponible para la provisión de cualquiera de los Servicios, Google se reserva el derecho de establecer límites al respecto en cualquier momento y a su absoluta discreción.
+
+5. Uso de los Servicios
+
+    5.1 A fin de poder acceder a determinados Servicios, es posible que se le solicite información personal, por ejemplo, datos identificativos e información de contacto, como parte del proceso de registro en el Servicio o como parte del uso continuado de los Servicios. Usted se compromete a que cualquier información de registro que facilite a Google será precisa, correcta y actual.
+
+    5.2 Usted acepta utilizar los Servicios exclusivamente con los fines estipulados en (a) las Condiciones y (b) cualquier ley o regulación aplicable o cualquiera de las prácticas o directrices aceptadas en las jurisdicciones pertinentes, incluida cualquier ley relativa a la exportación de datos o software a o desde los Estados Unidos o cualquier país pertinente.
+
+    5.3 Usted se compromete a no acceder ni a intentar acceder a ninguno de los Servicios por ningún otro medio que no sea la interfaz provista por Google, a menos que así se haya establecido en un acuerdo por escrito independiente entre usted y Google. Se compromete en concreto a no acceder, o intentar acceder, a ninguno de los Servicios utilizando medios automatizados, incluidos secuencias de comandos o rastreadores web, y se asegurará de cumplir las instrucciones dispuestas en cualquier archivo robots.txt correspondiente a los Servicios.
+
+    5.4 Asimismo, se compromete a no involucrarse en ninguna actividad que interfiera o que interrumpa los Servicios o los servidores y redes conectados a aquellos.
+
+    5.5 A menos que se estipule lo contrario en un acuerdo independiente entre Google y usted, usted se compromete a no reproducir, duplicar, copiar, vender, comercializar ni revender los Servicios para ningún fin.
+
+    5.6 Por el presente acuerdo, usted acepta que es el único responsable, y que Google renuncia a toda responsabilidad hacia usted o hacia cualquier tercero, del incumplimiento de cualquiera de sus obligaciones en virtud de las Condiciones, así como de las consecuencias, incluido cualquier pérdida o daño que pueda ocasionar a Google, derivado de dicho incumplimiento.
+
+6. Contraseñas y seguridad de la cuenta
+
+    6.1 Por el presente acuerdo, reconoce y acepta que es usted el único responsable de mantener la confidencialidad de sus contraseñas asociadas a cualquiera de las cuentas que utiliza para acceder a los Servicios.
+
+    6.2 En consecuencia, acepta que usted será el único responsable ante Google de todas y cada una de las actividades que se desarrollen en su cuenta.
+
+    6.3 Acepta notificar de inmediato a Google cualquier uso no autorizado de su contraseña o cuenta de que tenga conocimiento, a través de la dirección http://www.google.com/support/accounts/bin/answer.py?answer=48601&hl=es.
+
+7. Información personal y privacidad
+
+    7.1 Para obtener información acerca de las prácticas de protección de datos que aplica Google, consulte nuestra Política de privacidad en http://www.google.es/privacy.html. Esta política explica el tratamiento que hace Google de su información personal y cómo protege su privacidad cuando utiliza los Servicios.
+
+    7.2 Por su parte, usted acepta el uso de sus datos de acuerdo con las políticas de privacidad de Google.
+
+8. Contenido de los Servicios
+
+    8.1 Por el presente acuerdo, usted reconoce que toda la información, como archivos de datos, texto escrito, programas informáticos, música, archivos de audio u otros sonidos, fotografías, vídeos u otro material gráfico, a la que tenga acceso como parte de los Servicios o a través del uso de estos, es responsabilidad exclusiva de la persona que ha creado dicho contenido. En adelante, dicha información se denominará el "Contenido".
+
+    8.2 El Contenido ofrecido como parte de los Servicios, incluidos entre otros los anuncios que aparecen en los Servicios y el Contenido patrocinado, podría estar protegido por derechos de propiedad intelectual pertenecientes a los patrocinadores o a los anunciantes que facilitan dicho Contenido a Google, o pertenecientes a otras personas o empresas en su nombre. A menos que Google o los propietarios del mencionado Contenido autoricen expresamente lo contrario en un acuerdo independiente, usted se compromete a no modificar, alquilar, arrendar, prestar, vender ni distribuir este Contenido, ni crear trabajos derivados basados en él, ya sea en su totalidad o en parte.
+
+    8.3 Google se reserva el derecho, aunque ello no constituye una obligación, de seleccionar anticipadamente, revisar, marcar, filtrar, modificar, rechazar o eliminar parcial o íntegramente el Contenido disponible a través de los Servicios. En el caso de algunos Servicios, Google podría proporcionar herramientas para filtrar contenido sexual explícito. Entre dichas herramientas se incluye la función SafeSearch. Consulte la dirección http://www.google.com/help/customize.html#safe para obtener más información al respecto. Asimismo, existen servicios y software que se pueden adquirir mediante compra diseñados para limitar el acceso a materiales que considere de dudosa reputación.
+
+    8.4 Por el presente acuerdo, es consciente de que al utilizar los Servicios podría estar expuesto a Contenido que, según su parecer, sea ofensivo, indecente o de dudosa reputación y de que, en consecuencia, usa los mismos Servicios bajo su propia responsabilidad.
+
+    8.5 Usted acepta que es el único responsable, y que Google renuncia a toda responsabilidad hacia usted o hacia cualquier tercero, de todo el Contenido que cree, transfiera o publique durante el uso de los Servicios, así como de las consecuencias derivadas de sus acciones, incluido cualquier pérdida o daño que ocasione a Google.
+
+9. Derechos sobre la propiedad
+
+    9.1 Por el presente acuerdo, usted acepta que Google, o sus proveedores de licencias, es el propietario de todos los derechos, títulos e intereses asociados a los Servicios, incluidos todos los derechos sobre la propiedad intelectual que actúen sobre ellos, independientemente de si los mencionados derechos están registrados o no y de donde existan. Asimismo, reconoce que los Servicios pueden contener información considerada confidencial por Google y se compromete a no revelar dicha información sin el consentimiento previo por escrito de Google.
+
+    9.2 A menos que acuerde lo contrario por escrito con Google, ninguna de las disposiciones de las Condiciones le otorga el derecho a usar los nombres y las marcas comerciales de Google, sus marcas de servicio, logotipos, nombres de dominio u otras características distintivas de marca.
+
+    9.3 En caso de que se le conceda el derecho explícito a utilizar alguna de estas características de marca a través de un acuerdo por escrito e independiente entre Google y usted, usted se compromete a que el uso de dichas características cumpla con el acuerdo en cuestión, con cualquiera de las disposiciones aplicables de las Condiciones y con las directrices de uso de los elementos de marca de Google, las cuales podrán modificarse periódicamente. Estas directrices pueden consultarse online a través de la dirección http://www.google.es/permissions/guidelines.html o de la URL que Google facilite a tal efecto.
+
+    9.4 Excepto la licencia limitada que se especifica en la Sección 11, Google renuncia a todo derecho, título o interés que le concedan usted o sus proveedores de licencias, de acuerdo con lo estipulado en estas Condiciones, y relativo a cualquier Contenido que usted facilite, publique, transfiera o muestre en los Servicios o a través de ellos, incluidos los derechos de propiedad intelectual que actúen sobre el Contenido, independientemente de si los mencionados derechos están registrados o no y de donde existen. Salvo que acuerde lo contrario por escrito con Google, usted se compromete a proteger y aplicar los mencionados derechos y exime a Google de la obligación de hacerlo en su nombre.
+
+    9.5 Usted acepta no eliminar, ocultar ni alterar los avisos de derechos sobre la propiedad, entre ellos, avisos de derechos de autor y de marcas registradas, tanto los incluidos en los Servicios como los que se facilitan como parte de estos.
+
+    9.6 Salvo que Google le haya concedido la autorización expresamente por escrito, usted se compromete a que, durante el uso de los Servicios, no utilizará ninguna marca comercial, marca de servicio, nombre comercial o logotipo de ninguna empresa u organización en modo alguno que ocasionara confusión sobre el propietario o usuario autorizado de dichas marcas, nombres o logotipos.
+
+10. Licencia de Google
+
+    10.1 Google le concede una licencia personal, internacional y no exclusiva, que no está sujeta a derechos de autor y que no puede asignarse, para utilizar el software proporcionado por Google como parte de los Servicios (en adelante, el "Software"). Esta licencia se otorga con el único propósito de permitirle utilizar los Servicios que le ofrece Google y beneficiarse de ellos según lo estipulado en las Condiciones.
+
+    10.2 Queda prohibido copiar, modificar, descompilar o intentar extraer el código fuente del Software total o parcialmente, o crear trabajos derivados o realizar ingeniería inversa de este, así como permitir que un tercero lo haga, a menos que así lo permita o exija la ley, o a menos que Google le conceda tales derechos por escrito.
+
+    10.3 A menos que Google le haya concedido el permiso por escrito, no podrá asignar ni conceder sublicencias de sus derechos para utilizar el Software, conceder intereses sobre la seguridad en cuanto a estos derechos ni transferir ninguno de tales derechos.
+
+11. Su licencia del Contenido
+
+    11.1 Usted conservará los derechos de autor y cualquier otro derecho que ya posea del Contenido que envíe, publique o muestre en los Servicios o a través de ellos. Al enviar, publicar o mostrar Contenido, estará concediendo a Google una licencia permanente, internacional, irrevocable, no exclusiva y que no está sujeta a derechos de autor para reproducir, adaptar, modificar, traducir, publicar, representar y mostrar públicamente, así como para distribuir, cualquier Contenido que envíe, publique o muestre en los Servicios o a través de ellos. Esta licencia se otorga con el único propósito de permitir a Google publicar, distribuir y promocionar los Servicios y puede revocarse para determinados Servicios, según lo estipulado en las Condiciones adicionales asociadas.
+
+    11.2 Usted acepta que esta licencia concede a Google el derecho de distribuir el Contenido a otras empresas, organizaciones o personas con las que Google mantiene relaciones con el fin de ofrecer servicios sindicados y de utilizar dicho Contenido en relación con la provisión de dichos servicios.
+
+    11.3 Por otra parte, usted es consciente de que, al llevar a cabo los pasos técnicos requeridos para ofrecer los Servicios a sus usuarios, Google podrá (a) transmitir o distribuir el Contenido a través de diversas redes públicas y distintos medios; y (b) aplicar los cambios necesarios al Contenido a fin de adaptarlo a los requisitos técnicos que exigen las redes, los dispositivos, los servicios o los medios de conexión pertinentes. Usted acepta que, por la presente licencia, se le concede a Google el derecho de llevar a cabo estas acciones.
+
+    11.4 Usted confirma y garantiza a Google que posee todos los derechos, poderes y autoridad necesarios para conceder la licencia anteriormente mencionada.
+
+12. Actualizaciones de software
+
+    12.1 El Software que utiliza podrá descargar e instalar automáticamente actualizaciones de Google. Dichas actualizaciones están diseñadas para mejorar, optimizar y desarrollar los Servicios y pueden presentarse en forma de correcciones, funciones mejoradas, nuevos módulos de software y versiones totalmente nuevas. Usted acepta recibir dichas actualizaciones, y permite a Google proporcionárselas, como parte de estos Servicios.
+
+13. Finalización de su relación con Google
+
+    13.1 Las Condiciones seguirán vigentes hasta que Google o usted decida resolverlas, según lo estipulado a continuación.
+
+    13.2 Para resolver el acuerdo legal establecido entre Google y usted, deberá (a) notificárselo a Google en cualquier momento y (b) cerrar las cuentas de todos los Servicios de los que hace uso, allí donde Google le ofrezca la opción. La notificación deberá enviarse por escrito a la dirección de Google que se indica al principio de estas Condiciones.
+
+    13.3 Google podrá resolver el acuerdo legal establecido con usted en cualquier momento si:
+
+        (A) Ha incumplido alguna de las disposiciones de las Condiciones o ha actuado de algún modo que demuestre que no tiene intención de cumplir tales disposiciones o que no puede cumplirlas.
+
+        (B) Así se lo exige a Google la ley, por ejemplo, en caso de que la provisión de los Servicios sea ilegal.
+
+        (C) El partner con el que Google le ofrece los Servicios ha suspendido su relación con Google o ha dejado de proporcionarle a usted los Servicios.
+
+        (D) Google se encuentra en trámites de interrumpir la provisión de los Servicios a los usuarios del país de residencia del usuario o en el que este utiliza el Servicio.
+
+        (E) La provisión de los Servicios por parte de Google ha dejado de ser comercialmente viable desde el punto de vista de Google.
+
+    13.4 Ninguna de las disposiciones expuestas en esta Sección afectará a los derechos de Google en cuanto a la provisión de los Servicios en virtud de la Sección 4 de las Condiciones.
+
+    13.5 Cuando estas Condiciones se rescindan, todos los derechos, las obligaciones y las responsabilidades legales por las que Google y usted se hayan regido, hayan acumulado durante la vigencia de las Condiciones o que continúen vigentes indefinidamente quedarán inalterados, y las disposiciones del párrafo 20.7 seguirán aplicándose a tales derechos, obligaciones y responsabilidades indefinidamente.
+
+14. EXCLUSIÓN DE GARANTÍAS
+
+    15.1 NINGUNA DE LAS DISPOSICIONES DE ESTAS CONDICIONES, INCLUIDAS LAS SECCIONES 14 Y 15, CONSTITUIRÁ LA EXCLUSIÓN O LIMITACIÓN DE LAS RESPONSABILIDADES DE GOOGLE POR PÉRDIDAS QUE NO ESTÉN EXCLUIDAS O LIMITADAS POR LA LEGISLACIÓN VIGENTE. ALGUNAS JURISDICCIONES NO PERMITEN LA EXCLUSIÓN DE CIERTAS GARANTÍAS O CONDICIONES NI LA LIMITACIÓN O EXCLUSIÓN DE RESPONSABILIDADES POR PÉRDIDAS O DAÑOS ORIGINADOS POR NEGLIGENCIA, INCUMPLIMIENTO DE CONTRATO O INCUMPLIMIENTO DE LAS CONDICIONES IMPLÍCITAS, O BIEN POR DAÑOS FORTUITOS O DERIVADOS. DE ACUERDO CON ELLO, SÓLO LAS LIMITACIONES QUE SEAN LEGALES EN SU JURISDICCIÓN SE APLICARÁN EN SU CASO, Y NUESTRA RESPONSABILIDAD SE LIMITARÁ AL MÁXIMO PERMITIDO POR LA LEY.
+
+    14.2 USTED MANIFIESTA Y ADMITE EXPRESAMENTE QUE EL USO DEL SERVICIO SE REALIZA BAJO SU PROPIA RESPONSABILIDAD Y QUE EL SERVICIO SE SUMINISTRA "TAL CUAL" Y EN FUNCIÓN DE SU "DISPONIBILIDAD".
+
+    14.3 En concreto, Google, sus subsidiarias y filiales, y sus proveedores de licencias no garantizan que:
+
+        (A) EL USO QUE USTED HAGA DE LOS SERVICIOS SE AJUSTE A SUS NECESIDADES ESPECÍFICAS.
+
+        (B) LOS SERVICIOS SE PROPORCIONEN DE FORMA ININTERRUMPIDA, PRECISA, SEGURA O SIN ERRORES.
+
+        (C) LA INFORMACIÓN QUE OBTENGA COMO CONSECUENCIA DEL USO DE LOS SERVICIOS SEA EXACTA O FIABLE.
+
+        (D) SE CORREGIRÁN LOS DEFECTOS DE FUNCIONAMIENTO Y OPERATIVIDAD DE CUALQUIER SOFTWARE QUE SE PROPORCIONE COMO PARTE DE LOS SERVICIOS.
+
+    14.4 TODO MATERIAL DESCARGADO U OBTENIDO POR CUALQUIER OTRO MEDIO A TRAVÉS DEL USO DE LOS SERVICIOS CORRE A SU CUENTA Y RIESGO, Y USTED SERÁ EL ÚNICO RESPONSABLE DE CUALQUIER DAÑO OCASIONADO EN SU SISTEMA INFORMÁTICO O EN CUALQUIER OTRO DISPOSITIVO, ASÍ COMO DE LA PÉRDIDA DE DATOS, QUE PUEDA RESULTAR DE LA DESCARGA DE DICHO MATERIAL.
+
+    14.5 NINGÚN TIPO DE NOTIFICACIÓN NI INFORMACIÓN, YA SEA ORAL O ESCRITA, OBTENIDA POR USTED DE GOOGLE O DE LOS SERVICIOS, O MEDIANTE ESTOS ÚLTIMOS, ORIGINARÁ GARANTÍAS NO MENCIONADAS EXPRESAMENTE EN LAS PRESENTES CONDICIONES.
+
+    14.6 GOOGLE RENUNCIA EXPRESAMENTE A TODAS LAS GARANTÍAS Y CONDICIONES DE CUALQUIER TIPO, YA SEAN EXPLÍCITAS O IMPLÍCITAS, INCLUYENDO ENTRE OTRAS LAS GARANTÍAS Y CONDICIONES IMPLÍCITAS DE COMERCIABILIDAD, APTITUD PARA UN FIN CONCRETO Y NO INFRACCIÓN.
+
+15. LIMITACIÓN DE RESPONSABILIDADES
+
+    15.1 EN VIRTUD DE LAS DISPOSICIONES DEL PÁRRAFO 14.1, GOOGLE, SUS SUBSIDIARIAS Y FILIALES Y SUS PROVEEDORES DE LICENCIAS NO SERÁN RESPONSABLES ANTE USTED POR:
+
+        (A) NINGÚN DAÑO DIRECTO, INDIRECTO, FORTUITO, ESPECIAL, DERIVADO NI EJEMPLAR EN QUE USTED HAYA INCURRIDO, SEA CUAL SEA SU CAUSA Y BAJO NINGUNA TEORÍA DE RESPONSABILIDAD. ELLO INCLUYE, ENTRE OTRAS, CUALQUIER PÉRDIDA DE BENEFICIOS, YA SEA DIRECTA O INDIRECTA, CUALQUIER PÉRDIDA DE PRESTIGIO PROFESIONAL O REPUTACIÓN EMPRESARIAL, CUALQUIER PÉRDIDA DE DATOS POR SU PARTE, GASTOS DEL ABASTECIMIENTO DE BIENES O SERVICIOS SUSTITUTIVOS U OTRAS PÉRDIDAS INTANGIBLES.
+
+        (B) NINGUNA PÉRDIDA O DAÑO EN QUE USTED PUEDA INCURRIR, INCLUIDOS ENTRE OTROS PÉRDIDAS O DAÑOS ORIGINADOS COMO CONSECUENCIA DE:
+
+            (I) LA CONFIANZA DEPOSITADA POR SU PARTE EN LA EXHAUSTIVIDAD, PRECISIÓN O EXISTENCIA DE PUBLICIDAD O COMO CONSECUENCIA DE CUALQUIER RELACIÓN O TRANSACCIÓN ENTRE USTED Y OTRO ANUNCIANTE O PATROCINADOR CUYA PUBLICIDAD APAREZCA EN LOS SERVICIOS;
+
+            (II) LOS CAMBIOS QUE GOOGLE PUEDA INCORPORAR EN LOS SERVICIOS O LA INTERRUPCIÓN TEMPORAL O DEFINITIVA DE ESTOS O DE ALGUNA DE SUS FUNCIONES;
+
+            (III) LA ELIMINACIÓN O DAÑO DEL CONTENIDO Y DE OTROS DATOS DE DIVULGACIÓN QUE SE ALOJAN EN LOS SERVICIOS O SE OFRECEN A TRAVÉS DE ESTOS, ASÍ COMO LA IMPOSIBILIDAD DE ALMACENARLOS;
+
+            (IV) LA IMPOSIBILIDAD DE PROPORCIONAR A GOOGLE INFORMACIÓN PRECISA DE LA CUENTA;
+
+            (V) LA NEGLIGENCIA POR NO HABER PRESERVADO SU CONTRASEÑA O LA INFORMACIÓN DE SU CUENTA DE FORMA SEGURA Y CONFIDENCIAL.
+
+    15.2 LAS LIMITACIONES DE LA RESPONSABILIDAD DE GOOGLE ANTE USTED ESTIPULADAS EN EL PÁRRAFO 15.1 SE APLICARÁN INDEPENDIENTEMENTE DE SI SE LE HAN NOTIFICADO TALES POSIBILIDADES DE PÉRDIDAS A GOOGLE O DE SI GOOGLE DEBERÍA HABER SIDO CONSCIENTE DE DICHA POSIBILIDAD.
+
+16. Políticas relativas a los derechos de autor y marcas comerciales
+
+    16.1 La política de Google consiste en responder a las notificaciones de supuestas infracciones de derechos de autor de acuerdo con lo estipulado por la ley de propiedad intelectual internacional, incluida la ley estadounidense de protección de los derechos de autor (Digital Millennium Copyright Act), así como en cancelar las cuentas de infractores recurrentes. En la página http://www.google.com/dmca.html encontrará la política de Google detallada.
+
+    16.2 Asimismo, Google cuenta con un procedimiento de reclamación de marcas comerciales relativo a su negocio publicitario, cuya descripción encontrará en la dirección http://www.google.com/tm_complaint.html.
+
+17. Publicidad
+
+    17.1 Algunos de los Servicios se financian a través de los ingresos obtenidos de la publicidad y pueden mostrar anuncios y promociones. Este tipo de publicidad podrá estar orientada al contenido de la información almacenada en los Servicios, a las consultas realizadas a través de estos o a otro tipo de información.
+
+    17.2 La manera, el modo y el alcance de dicha publicidad de Google en los Servicios están sujetos a cambios sin previo aviso.
+
+    17.3 Como contraprestación del acceso y el uso de los Servicios, usted acepta que Google muestre dicha publicidad en los Servicios.
+
+18. Otros contenidos
+
+    18.1 Los Servicios podrán incluir hipervínculos a otros sitios, contenido o recursos de Internet. Google no ejerce ningún control sobre los recursos y sitios web que proporcionen terceros ajenos a Google.
+
+    18.2 Usted reconoce y acepta que Google no se responsabiliza de la disponibilidad de dichos sitios web o recursos externos y que no respalda la publicidad, productos u otros materiales proporcionados en los sitios web o recursos en cuestión o a través de ellos, ni es responsable de ellos.
+
+    18.3 Usted reconoce y acepta que Google no se responsabiliza de ninguna de las pérdidas o daños en que usted pueda incurrir como consecuencia de la disponibilidad de dichos sitios web o recursos externos o como consecuencia de la confianza que usted deposite en la exhaustividad, precisión o existencia de publicidad, productos u otros materiales proporcionados en los sitios web o recursos en cuestión o a través de ellos.
+
+19. Cambios en las Condiciones
+
+    19.1 Google podrá incorporar cambios en las Condiciones universales o Condiciones adicionales según considere oportuno. En ese caso, Google incluirá la nueva versión de las Condiciones universales en http://www.google.es/accounts/TOS y proporcionará las Condiciones adicionales en los Servicios correspondientes o a través de estos.
+
+    19.2 Usted reconoce y acepta que si utiliza los Servicios después de haberse incorporado los cambios pertinentes en las Condiciones universales y Condiciones adicionales Google asumirá que los acepta.
+
+20. Condiciones legales generales
+
+    20.1 En ocasiones, es posible que, como consecuencia del uso de los Servicios o de acciones realizadas a través estos, utilice un servicio, descargue un programa o adquiera productos proporcionados por otra persona o empresa. El uso que haga de todos ellos estará sujeto a otros términos establecidos entre la persona o empresa en cuestión y usted. En ese caso, las Condiciones no afectarán a la relación legal que establezca con estas otras personas o empresas.
+
+    20.2 Las presentes Condiciones constituyen el acuerdo legal completo entre Google y usted, rigen el uso que usted haga de los Servicios, sin incluir los servicios que Google le ofrezca en virtud de un acuerdo por escrito independiente, y sustituyen cualquier acuerdo previo entre Google y usted relativo a los Servicios.
+
+    20.3 Usted acepta que Google puede proporcionarle avisos, incluidos los relativos a los cambios de las Condiciones, a través del correo electrónico, correo postal o mediante su publicación en los Servicios.
+
+    20.4 Usted acepta que, si Google no ejerce ningún derecho legal ni ningún desagravio estipulado en las Condiciones o de los que Google pueda beneficiarse en virtud de alguna ley aplicable, se interpretará como que ello no supone una renuncia legal de los derechos de Google y que Google seguirá disponiendo de estos desagravios y derechos legales.
+
+    20.5 Si un tribunal, con la jurisdicción competente para decidir sobre este asunto, falla que alguna de las disposiciones de estas Condiciones no es válida, dicha disposición se eliminará de las Condiciones sin que ello afecte al resto. El resto de las Condiciones seguirán siendo válidas y vigentes.
+
+    20.6 Usted reconoce y acepta que cada uno de los miembros del grupo de empresas subsidiarias y filiales de Google constituyen beneficiarios terceros de las Condiciones y que dichas empresas están autorizadas a aplicar directamente las disposiciones de las Condiciones que les concedan los beneficios o derechos pertinentes, así como a basarse en ellas. Excepto lo anteriormente estipulado, no habrá ninguna otra persona o empresa beneficiaria de las presentes Condiciones.
+
+    20.7 Las Condiciones de servicio y la relación surgida entre Google y usted por virtud de estas se regirán por las leyes del Estado de California, sin contemplarse sus normas respecto a conflicto de leyes. Google y usted aceptan someterse a la jurisdicción exclusiva de los tribunales del Condado de Santa Clara (California) para resolver cualquier asunto legal derivado de estas Condiciones. Sin perjuicio de lo dispuesto, usted acepta que Google podrá reclamar por desagravio provisional, o un tipo de desagravio legal urgente que sea equivalente, en cualquier jurisdicción.
+			</textarea><br/><br/><div id="vperfil">Al hacer clic en el botón 'Acepto' que aparece a continuación, acepta los terminos de servicio anteriores</div></center></td>
+			
+			
+			</tr></table>
+		
+		<input type = "button" name = "btnvalidar" onClick = "validar();" value = "Acepto, Crear mi cuenta."/>
+	<br/>
+	<div id="resultado"></div>
+	
+	
+	
+	</center>
+	        <div id="footer">
+       <div id="bts_inf" class="bts_inf">       
+        <a href="/Enwipweb/AcercaEnwip.html" class="otrosTerminos">Acerca ENWIP</a><a href="/Enwipweb/Aliados.html" class="otrosTerminos">Aliados ENWIP</a><a href="/Enwipweb/privacidad.html" class="otrosTerminos">Privacidad</a><a href="/Enwipweb/terminos.html" class="otrosTerminos">Terminos de Uso</a><a href="/Enwipweb/PublicidadPrensa.html" class="otrosTerminos">Publicidad y Prensa</a><a href="/Enwipweb/Olaborales.html" class="otrosTerminos">Oportunidades Laborales con ENWIP</a><a href="/Enwipweb/ayuda.html" class="otrosTerminos">Ayuda</a><a href="/Enwipweb/contactenos.html" class="otrosTerminos">Contactenos</a><a href="http://www.enwip.org" target="_blank" class="otrosTerminos">ENWIP Social</a><a href="/Enwipweb/mapadelsitio.html" class="otrosTerminos">Mapa del Sitio</a>
+        </div>
+        </div>
+	
+	</body>
+
+</html>

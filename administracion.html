@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script language="JavaScript"><!--
+
+function activarUsuario(){
+
+	
+}
+
+function validarUsuario(){
+			document.getElementById("vpass").innerHTML="";
+			document.getElementById("vname").innerHTML="";
+
+            
+			var nom=document.datos.user.value;
+			var passw=document.datos.pass.value;	
+							 
+			var listo=true;
+
+			
+			if(nom==""){
+				document.getElementById("vname").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+			if(passw==""){
+				document.getElementById("vpass").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+	
+			if(listo){
+				enviarDatos();
+				}
+
+			}
+		
+		function enviarDatos(){
+			if (window.ActiveXObject)
+       	  {   xhr = new ActiveXObject("Microsoft.XMLHttp");      
+        	  }
+        else if ((window.XMLHttpRequest) || (typeof XMLHttpRequest)!=undefined)
+            {         xhr = new XMLHttpRequest();
+            }
+        else
+            { alert("Su navegador no tiene soporte para AJAX");
+              return;
+            }
+			
+				xhr.open("POST","http://localhost:8080/Enwipweb/ServletValidarAdministrador",true);
+				xhr.onreadystatechange = procesaResultado;
+			       // Definición del tipo de contenido del cuerpo para formularios HTML
+			          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			          
+			          var datos = obtenerDatos();
+			       // Se envían los datos en el cuerpo de la petición
+			          xhr.send(datos);
+			   }
+
+		 function procesaResultado()
+	        { 
+				
+		        if (xhr.readyState == 4) 
+                  {  
+					
+	                  var res=xhr.responseText;
+
+						if(res=="encontrado"){
+							document.location.href="http://localhost:8080/Enwipweb/administrador.html";
+						}
+						else{
+								document.getElementById("encabezado").appendChild(document.createTextNode(res));
+							}
+						
+			     document.getElementById("vpass").innerHTML=res;
+			
+				  
+	          }
+		          
+	          
+	        }
+		 
+		function obtenerDatos()
+	        { var controles = document.forms[0].elements;
+			          var datos = new Array();
+			          var cad = "";
+			          for (var i=0; i<controles.length; i++)
+			          {    cad = encodeURIComponent(controles[i].name)+"=";
+			               cad += encodeURIComponent(controles[i].value);
+			               datos.push(cad);
+			          }
+			       // Se forma la cadena con el método join() del array para evitar múltiples concatenaciones
+			          cad = datos.join("&");
+			          return cad;
+			        }
+		--></script>
+</head>
+<body>
+	
+        <br/>
+       <div id="encabezado"></div>
+        <br/>
+      <div id="formu">  <form name="datos" action="">
+      
+      <table>
+      		<tr>
+            <td>Usuario:</td><td> <input type="text" name="user" value="" size="20" /></td><td><div id="vname"></div></td>
+            </tr>
+            <tr>
+            <td>Password: </td><td><input type="password" name="pass" value="" size="20" /></td><td><div id="vpass"></div></td>
+             </tr>
+            </table>
+            <br/>
+            <center><input type="button" value="Entrar" name="entrar" onClick="validarUsuario()"/></center>
+        </form></div><div id="vpass1"></div><br/><br/><br/><div id="resultado"></div>
+        
+
+   
+</body>
+</html>

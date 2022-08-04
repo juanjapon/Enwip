@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="C:/Users/juanjapon/jboss-6.0.0.Final/server/default/deploy/Enwip.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Enwip/enwip.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=Enwip/src&lt;server"/>
+        <javaElement handleIdentifier="=Enwip/src&lt;server.entities"/>
+        <javaElement handleIdentifier="=Enwip/src&lt;server.session"/>
+        <javaElement handleIdentifier="=Enwip/src&lt;server.util"/>
+        <folder path="/Enwip/META-INF"/>
+    </selectedElements>
+</jardesc>

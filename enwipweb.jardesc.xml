@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="C:/Users/juanjapon/jboss-6.0.0.Final/server/default/deploy/Enwipweb.war"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Enwip/enwipweb.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=Enwip/src&lt;web"/>
+        <file path="/Enwip/profil.jpg"/>
+        <file path="/Enwip/ayuda.html"/>
+        <file path="/Enwip/mapadelsitio.html"/>
+        <file path="/Enwip/privacidad.html"/>
+        <file path="/Enwip/AcercaEnwip.html"/>
+        <folder path="/Enwip/imagenes"/>
+        <file path="/Enwip/administrador.html"/>
+        <file path="/Enwip/Aliados.html"/>
+        <file path="/Enwip/registrado.html"/>
+        <file path="/Enwip/Olaborales.html"/>
+        <folder path="/Enwip/fontface"/>
+        <file path="/Enwip/pruebaVideo.ogg"/>
+        <file path="/Enwip/contactenos.html"/>
+        <file path="/Enwip/terminos.html"/>
+        <folder path="/Enwip/javascripts"/>
+        <folder path="/Enwip/WEB-INF"/>
+        <file path="/Enwip/activacionCuenta.html"/>
+        <file path="/Enwip/network.html"/>
+        <file path="/Enwip/administracion.html"/>
+        <file path="/Enwip/index.html"/>
+        <file path="/Enwip/PublicidadPrensa.html"/>
+        <file path="/Enwip/style.css"/>
+        <file path="/Enwip/formulario.html"/>
+    </selectedElements>
+</jardesc>

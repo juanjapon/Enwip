@@ -1,0 +1,116 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="/Enwipweb/style.css">
+<link rel="shortcut icon" href="/Enwipweb/imagenes/ENWIP_favicon.ico">
+<script language="JavaScript"><!--
+
+function activarUsuario(){
+			document.getElementById("vclave").innerHTML="";
+			
+
+            
+			var clave=document.datos.clave.value;
+			
+							 
+			var listo=true;
+
+			
+			if(clave==""){
+				document.getElementById("vclave").innerHTML="<font color=\"red\">Este campo no puede estar vacio</font>";
+				listo=false;
+				}
+
+	
+			if(listo){
+				enviarDatos();
+				}
+
+			}
+		
+		function enviarDatos(){
+			if (window.ActiveXObject)
+       	  {   xhr = new ActiveXObject("Microsoft.XMLHttp");      
+        	  }
+        else if ((window.XMLHttpRequest) || (typeof XMLHttpRequest)!=undefined)
+            {         xhr = new XMLHttpRequest();
+            }
+        else
+            { alert("Su navegador no tiene soporte para AJAX");
+              return;
+            }
+			
+				xhr.open("POST","http://localhost:8080/Enwipweb/ServletActivarUsuario",true);
+				xhr.onreadystatechange = procesaResultado;
+			       // Definición del tipo de contenido del cuerpo para formularios HTML
+			          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			          alert("se van a enviar los datos");
+			          var datos = obtenerDatos();
+			       // Se envían los datos en el cuerpo de la petición
+			          xhr.send(datos);
+			   }
+
+		 function procesaResultado()
+	        { 
+				
+		        if (xhr.readyState == 4) 
+                  {  
+					
+	                  var res=xhr.responseText;
+
+						if(res=="listo"){
+							document.location.href="http://localhost:8080/Enwipweb/network.html";
+						}
+
+						
+			     document.getElementById("vclave").innerHTML=res;
+			
+				  
+	          }
+		          
+	          
+	        }
+		 
+		function obtenerDatos()
+	        { var controles = document.forms[0].elements;
+			          var datos = new Array();
+			          var cad = "";
+			          for (var i=0; i<controles.length; i++)
+			          {    cad = encodeURIComponent(controles[i].name)+"=";
+			               cad += encodeURIComponent(controles[i].value);
+			               datos.push(cad);
+			          }
+			       // Se forma la cadena con el método join() del array para evitar múltiples concatenaciones
+			          cad = datos.join("&");
+			          alert(cad);
+			          return cad;
+			        }
+		--></script>
+</head>
+
+<body>
+<br/>
+       <div id="encabezado"></div>
+        <br/>
+         <br/>
+          <br/>
+           <br/>
+            <br/>
+   <form name="datos" action="">      
+<table>
+	<tr>
+		<td><input type="clave" name="clave" value="" size="20" /></td><div id="vclave"></div>
+		<td><input type="button" value="Activar" name="entrar" onClick="activarUsuario()"/></td>
+	</tr>
+	<tr>
+		<td colspan="2">Ingrese el codigo de activacion enviado a su correo</td>
+	</tr>
+</table>
+	</form>
+</body>
+
+</html>
+
+
+

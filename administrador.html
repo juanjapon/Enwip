@@ -1,0 +1,199 @@
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/Enwipweb/style.css">
+	<script src="javascripts/utilidades.js" language="javascript"></script>
+	
+	
+	<script language="JavaScript"><!--
+	
+	
+	var obj;
+	function cargarDatosAdministrador(){
+		obj = new ObjetoAJAX();
+		obj.enviar("http://localhost:8080/Enwipweb/CargarDatosAdministrador","GET","procesaDatos", null);
+		}
+	function cargarClases(){
+		obj.enviar("http://localhost:8080/Enwipweb/CargarClasesAdministrador","GET","procesaClases", null);
+		}
+	function cargarCharlas(){
+		obj.enviar("http://localhost:8080/Enwipweb/CargarCharlasAdministrador","GET","procesaCharlas", null);
+		}
+
+	function cargarContenidos(){
+		obj.enviar("http://localhost:8080/Enwipweb/CargarContenidosAdministrador","GET","procesaContenidos", null);
+		}
+	function cargarPlanes(){
+		obj.enviar("http://localhost:8080/Enwipweb/CargarPlanesAdministrador","GET","procesaPlanes", null);
+		}
+	function cerrarSesion(){
+		obj.enviar("http://localhost:8080/Enwipweb/CerrarSesion","GET","volverPaginaInicial",null);
+
+	}
+    function cargarNoticias(){
+   	 obj.enviar("http://localhost:8080/Enwipweb/CargarNoticiasAdministrador","GET","procesaNoticias", null);
+       }
+
+   function procesaNoticias()
+   { 	        
+        var noticias = eval("("+obj.respuestaTexto()+")");
+        document.getElementById("titulo").innerHTML="<b>Noticias</b>";
+        borrarTexto();
+        var crear=crearBoton("Crear Noticia");
+        crear.onclick=crearNoticia;
+        document.getElementById("texto").appendChild(crear);
+  // Genera el resto de opciones de la lista a partir de los datos recibidos en la respuesta
+     for (var elm = 0;elm < noticias.length;elm++)
+     {    var item=document.createElement("div");
+          item.id="noticia"+elm;
+          var texto=document.createTextNode(noticias[elm].Noticia);
+          item.appendChild(texto);
+          document.getElementById("formularios").appendChild(item);
+          var item1=document.createElement("div");
+          item1.id="imagen"+elm;
+          var texto1=document.createTextNode(noticias[elm].Imagen);
+          item1.appendChild(texto1);
+          document.getElementById("formularios").appendChild(item1);
+     }
+    
+   }
+   function crearNoticia(){
+	   borrarTexto();
+	   var tabla=document.createElement("table");
+	   var trImagen=document.createElement("tr");
+	   var trContenido=document.createElement("tr");
+	   var trImagenT=document.createElement("tr");
+	   var trContenidoT=document.createElement("tr");
+	   trImagenT.appendChild(document.createTextNode("Imagen"));
+	   trContenidoT.appendChild(document.createTextNode("Contenido"));
+	   
+	   
+	   var formularioFoto=document.createElement("form");
+		 formularioFoto.id="formularioFoto";
+		 formularioFoto.method="POST";
+		 formularioFoto.enctype="multipart/form-data";
+		 formularioFoto.encoding="multipart/form-data";
+		 formularioFoto.action="http://localhost:8080/Enwipweb/SubirImagenNoticia";
+		 formularioFoto.target="iframeUpload";
+		 
+		 var textoFoto=document.createTextNode("Seleccione la imagen");
+		 var fileInput=document.createElement("input");
+		 fileInput.type="file";
+		 fileInput.name="fichero";
+		 fileInput.onchange=function(){formularioFoto.submit();};
+		 fileInput.target="iframeUpload";
+		 var iframeUpload=document.createElement("iframe");
+		 iframeUpload.name="iframeUpload";
+		 iframeUpload.style.display="none";
+		 var script=document.createElement("script");
+		 var textoScript=document.createTextNode("parent.cargarFoto();");
+		 script.appendChild(textoScript);
+		 iframeUpload.appendChild(script);
+		 formularioFoto.appendChild(textoFoto);
+         formularioFoto.appendChild(fileInput);
+		 trImagen.appendChild(formularioFoto);
+
+		 var guardar=crearBoton("Guardar");
+		 guardar.onclick=function (){guardarContenidoNoticia(formularioContenido);};
+		 var formularioContenido=document.createElement("form");
+		 var item=document.createElement("textarea");
+         item.setAttribute("cols","70");
+         item.setAttribute("rows","7");
+    	 item.name="contenido";
+    	 formularioContenido.appendChild(item);
+         trContenido.appendChild(formularioContenido);
+		 var trBoton=document.createElement("tr");
+		 trBoton.appendChild(guardar);
+         tabla.appendChild(trImagenT);
+         tabla.appendChild(trImagen);
+         tabla.appendChild(trContenidoT);
+         tabla.appendChild(trContenido);
+         tabla.appendChild(trBoton);
+
+         document.getElementById("texto").appendChild(tabla);
+		 
+	   }
+   function guardarContenidoNoticia(formulario){
+	   obj.enviar("http://localhost:8080/Enwipweb/GuardarContenidoNoticia","POST","cargarNoticias", formulario);
+	   }
+	function volverPaginaInicial(){
+		document.location.href="http://localhost:8080/Enwipweb/administracion.html";
+		}
+
+
+    function borrarTexto(){
+ 	   var elt = document.getElementById("texto");
+
+        if(elt.hasChildNodes()) {
+            while ( elt.childNodes.length >= 1 ) {
+                elt.removeChild( elt.firstChild );       
+            } 
+        }
+        
+        var elt1 = document.getElementById("formularios");
+
+        if(elt1.hasChildNodes()) {
+            while ( elt1.childNodes.length >= 1 ) {
+                elt1.removeChild( elt1.firstChild );       
+            } 
+        }
+     }
+	function crearBoton(nombre){
+		var boton=document.createElement("button");
+		var txtboton=document.createTextNode(nombre);
+		boton.appendChild(txtboton);
+
+		return boton;
+	}
+ function borrarFormularios(){
+
+     var elt1 = document.getElementById("formularios");
+
+     if(elt1.hasChildNodes()) {
+         while ( elt1.childNodes.length >= 1 ) {
+             elt1.removeChild( elt1.firstChild );       
+         } 
+     }
+  }
+	function procesaDatos(){
+		var res=obj.respuestaTexto();
+
+		if(res=="iniciar sesion"){
+				volverPaginaInicial();
+			}
+          document.getElementById("datosAdministrador").innerHTML=res;
+			
+		}
+
+
+        --></script>
+</head>
+
+<body onLoad="cargarDatosAdministrador();">
+	<div id="encabezado">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<right><input type="button" value="Cerrar sesion" name="entrar" onClick="cerrarSesion();"/></right></div>
+	</br></br></br></br></br>
+	<div id="menu"><table border=0 align=center cellpadding=5 cellspacing=5>
+					
+					<tr><td><div id="datosAdministrador"></div></td></tr>
+					<tr><td><input type="button" value="Noticias" name="noticias" onClick="cargarNoticias()"/></td></tr>
+					<tr><td><input type="button" value="Clases" name="clases" onClick="cargarClases()"/></td></tr>
+					<tr><td><input type="button" value="Charlas" name="charlas" onClick="cargarCharlas()"/></td></tr>
+					<tr><td><input type="button" value="Contenidos" name="contenidos" onClick="cargarContenidos()"/></td></tr>
+					<tr><td><input type="button" value="Planes de negocio" name="Planes de negocio" onClick="cargarPlanes()"/></td></tr>
+	             </table>
+	             </div>
+	             <div id="opciones"></div>
+	             <div id="contenido">
+	              <div id="titulo"></div>
+	              <div id="texto"></div>
+	              <div id="formularios"></div>
+	              
+	             </div>
+	             
+	             
+	<div id="cuaderno"></div>
+</body>
+
+</html>
+
